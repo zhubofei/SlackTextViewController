@@ -56,11 +56,11 @@
     if (!self.isDragging) {
         return;
     }
-    
+
     CGPoint offset = self.contentOffset;
     offset.y -= 1.0;
     [self setContentOffset:offset];
-    
+
     offset.y += 1.0;
     [self setContentOffset:offset];
 }

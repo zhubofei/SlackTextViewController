@@ -20,14 +20,14 @@
 @class SLKTextView;
 @class SLKInputAccessoryView;
 
-typedef NS_ENUM(NSUInteger, SLKCounterStyle) {
+typedef NS_ENUM (NSUInteger, SLKCounterStyle) {
     SLKCounterStyleNone,
     SLKCounterStyleSplit,
     SLKCounterStyleCountdown,
     SLKCounterStyleCountdownReversed
 };
 
-typedef NS_ENUM(NSUInteger, SLKCounterPosition) {
+typedef NS_ENUM (NSUInteger, SLKCounterPosition) {
     SLKCounterPositionTop,
     SLKCounterPositionBottom
 };
@@ -75,7 +75,7 @@ typedef NS_ENUM(NSUInteger, SLKCounterPosition) {
 
 /**
  Initializes a text input bar with a class to be used for the text view
- 
+
  @param textViewClass The class to be used when creating the text view. May be nil. If provided, the class must be a subclass of SLKTextView
  @return An initialized SLKTextInputbar object or nil if the object could not be created.
  */
@@ -107,7 +107,7 @@ typedef NS_ENUM(NSUInteger, SLKCounterPosition) {
 
 /**
  Verifies if the text can be edited.
- 
+
  @param text The text to be edited.
  @return YES if the text is editable.
  */

@@ -21,7 +21,7 @@
 
 /**
  Returns the current first responder object.
- 
+
  @return A UIResponder instance.
  */
 + (instancetype)slk_currentFirstResponder;

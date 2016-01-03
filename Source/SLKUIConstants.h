@@ -40,11 +40,11 @@ inline static CGRect SLKKeyWindowBounds()
 inline static CGRect SLKRectInvert(CGRect rect)
 {
     CGRect invert = CGRectZero;
-    
+
     invert.origin.x = rect.origin.y;
     invert.origin.y = rect.origin.x;
     invert.size.width = rect.size.height;
     invert.size.height = rect.size.width;
-    
+
     return invert;
 }
