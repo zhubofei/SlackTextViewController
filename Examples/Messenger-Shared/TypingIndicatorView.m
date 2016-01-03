@@ -137,7 +137,7 @@
 
     NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:text];
     [attributedString addAttributes:@{NSFontAttributeName: [UIFont boldSystemFontOfSize:12.0]}
-     range:[text rangeOfString:name]];
+                              range:[text rangeOfString:name]];
 
     self.titleLabel.attributedText = attributedString;
     self.thumbnailView.image = image;

@@ -196,7 +196,7 @@ static NSString *AutoCompletionCellIdentifier = @"AutoCompletionCell";
 
         // This will cause the typing indicator to show after a delay ¯\_(ツ)_/¯
         [LoremIpsum asyncPlaceholderImageWithSize:imgSize
-         completion:^(UIImage *image) {
+                                       completion:^(UIImage *image) {
              UIImage *thumbnail = [UIImage imageWithCGImage:image.CGImage scale:scale orientation:UIImageOrientationUp];
              [view presentIndicatorWithName:[LoremIpsum name] image:thumbnail];
          }];
@@ -291,7 +291,7 @@ static NSString *AutoCompletionCellIdentifier = @"AutoCompletionCell";
     [[UIApplication sharedApplication].keyWindow addSubview:_pipWindow];
 
     [UIView animateWithDuration:0.25
-     animations:^{
+                     animations:^{
          _pipWindow.alpha = 1.0;
      }];
 }
@@ -299,10 +299,10 @@ static NSString *AutoCompletionCellIdentifier = @"AutoCompletionCell";
 - (void)hidePIPWindow:(id)sender
 {
     [UIView animateWithDuration:0.3
-     animations:^{
+                     animations:^{
          _pipWindow.alpha = 0.0;
      }
-     completion:^(BOOL finished) {
+                     completion:^(BOOL finished) {
          _pipWindow.hidden = YES;
          _pipWindow = nil;
      }];
@@ -456,7 +456,6 @@ static NSString *AutoCompletionCellIdentifier = @"AutoCompletionCell";
 
 #else
     return [super canShowTypingIndicator];
-
 #endif
 }
 
