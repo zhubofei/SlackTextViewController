@@ -348,6 +348,7 @@
 				4F3EDB47199ED00F004C15D6 /* Resources */,
 				598FDC5936E74A05A38CC639 /* Copy Pods Resources */,
 				C2EB646D4848767495734371 /* Embed Pods Frameworks */,
+				F53F25D31C38AFEA00BDA85C /* Objective-C Code Formatting */,
 			);
 			buildRules = (
 			);
@@ -635,6 +636,21 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		F53F25D31C38AFEA00BDA85C /* Objective-C Code Formatting */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Objective-C Code Formatting";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/uncrustify",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Executable available at https://github.com/bengardner/uncrustify\n\n${SRCROOT}/uncrustify -l OC -q -c ${SRCROOT}/uncrustify_objc.cfg ${SRCROOT}/**/*.[ch,cm] --no-backup stop > /dev/null 2>&1 || true\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
