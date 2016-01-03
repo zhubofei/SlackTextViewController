@@ -16,19 +16,19 @@
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.backgroundColor = [UIColor whiteColor];
-    
+
     MessageViewController *messageVC = [MessageViewController new];
     UINavigationController *navVC = [[UINavigationController alloc] initWithRootViewController:messageVC];
-    
+
     navVC.modalPresentationStyle = UIModalPresentationFormSheet;
     navVC.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
     self.window.rootViewController = [UIViewController new];
     [self.window makeKeyAndVisible];
-    
+
     [self.window.rootViewController presentViewController:navVC animated:YES completion:^{
-        [messageVC presentKeyboard:YES];
-    }];
-    
+         [messageVC presentKeyboard:YES];
+     }];
+
     return YES;
 }
 

@@ -54,10 +54,6 @@
 
 /* Begin PBXFileReference section */
 		275184D5567C78600C1EF80A /* Pods-Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Tests/Pods-Tests.release.xcconfig"; sourceTree = "<group>"; };
-		4F1AD51E19E727750027043E /* ___FILEBASENAME___.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "___FILEBASENAME___.h"; sourceTree = "<group>"; };
-		4F1AD51F19E727750027043E /* ___FILEBASENAME___.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "___FILEBASENAME___.m"; sourceTree = "<group>"; };
-		4F1AD52119E727750027043E /* ___FILEBASENAME___.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "___FILEBASENAME___.h"; sourceTree = "<group>"; };
-		4F1AD52219E727750027043E /* ___FILEBASENAME___.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "___FILEBASENAME___.m"; sourceTree = "<group>"; };
 		4F3256151AA77386008C1DD9 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		4F3256161AA77386008C1DD9 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		4F3256171AA77386008C1DD9 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -150,35 +146,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		4F1AD51C19E727640027043E /* Templates */ = {
-			isa = PBXGroup;
-			children = (
-				4F1AD51D19E727750027043E /* UICollectionView */,
-				4F1AD52019E727750027043E /* UITableView */,
-			);
-			name = Templates;
-			sourceTree = "<group>";
-		};
-		4F1AD51D19E727750027043E /* UICollectionView */ = {
-			isa = PBXGroup;
-			children = (
-				4F1AD51E19E727750027043E /* ___FILEBASENAME___.h */,
-				4F1AD51F19E727750027043E /* ___FILEBASENAME___.m */,
-			);
-			name = UICollectionView;
-			path = "../../File Templates/SlackTextView Controller.xctemplate/UICollectionView";
-			sourceTree = "<group>";
-		};
-		4F1AD52019E727750027043E /* UITableView */ = {
-			isa = PBXGroup;
-			children = (
-				4F1AD52119E727750027043E /* ___FILEBASENAME___.h */,
-				4F1AD52219E727750027043E /* ___FILEBASENAME___.m */,
-			);
-			name = UITableView;
-			path = "../../File Templates/SlackTextView Controller.xctemplate/UITableView";
-			sourceTree = "<group>";
-		};
 		4F3256141AA77386008C1DD9 /* iPad Sheet Example */ = {
 			isa = PBXGroup;
 			children = (
@@ -195,7 +162,6 @@
 			isa = PBXGroup;
 			children = (
 				4F86BF8B19F011E9007A3D4A /* Examples */,
-				4F1AD51C19E727640027043E /* Templates */,
 				4F3EDB4B199ED00F004C15D6 /* Frameworks */,
 				4F3EDB4A199ED00F004C15D6 /* Products */,
 				68B0EE14916D384C7E703B9B /* Pods */,

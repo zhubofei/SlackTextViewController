@@ -33,18 +33,19 @@
     [self addSubview:self.titleLabel];
     [self.layer insertSublayer:self.backgroundGradient atIndex:0];
 
-    NSDictionary *views = @{@"thumbnailView": self.thumbnailView,
-                            @"titleLabel": self.titleLabel
-                            };
-    
-    NSDictionary *metrics = @{@"invertedThumbSize": @(-kTypingIndicatorViewAvatarHeight/2.0),
-                              };
-    
+    NSDictionary *views = @{
+        @"thumbnailView": self.thumbnailView,
+        @"titleLabel": self.titleLabel
+    };
+
+    NSDictionary *metrics = @{
+        @"invertedThumbSize": @(-kTypingIndicatorViewAvatarHeight/2.0),
+    };
+
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-5-[thumbnailView]-10-[titleLabel]-(>=0)-|" options:0 metrics:metrics views:views]];
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(>=0)-[thumbnailView]-(invertedThumbSize)-|" options:0 metrics:metrics views:views]];
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(>=0)-[titleLabel]-(3@750)-|" options:0 metrics:metrics views:views]];
 }
-
 
 #pragma mark - SLKTypingIndicatorProtocol
 
@@ -55,16 +56,14 @@
     }
 }
 
-
 #pragma mark - UIView
 
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    
+
     self.backgroundGradient.frame = self.bounds;
 }
-
 
 #pragma mark - Getters
 
@@ -92,7 +91,7 @@
         _titleLabel.userInteractionEnabled = NO;
         _titleLabel.numberOfLines = 1;
         _titleLabel.contentMode = UIViewContentModeTopLeft;
-        
+
         _titleLabel.font = [UIFont systemFontOfSize:12.0];
         _titleLabel.textColor = [UIColor lightGrayColor];
     }
@@ -104,11 +103,11 @@
     if (!_backgroundGradient) {
         _backgroundGradient = [CAGradientLayer layer];
         _backgroundGradient.frame = CGRectMake(0.0, 0.0, CGRectGetWidth(SLKKeyWindowBounds()), [self height]);
-        
+
         _backgroundGradient.colors = @[(id)[UIColor colorWithWhite:1.0 alpha:0].CGColor,
                                        (id)[UIColor colorWithWhite:1.0 alpha:0.9].CGColor,
                                        (id)[UIColor colorWithWhite:1.0 alpha:1.0].CGColor];
-        
+
         _backgroundGradient.locations = @[@0, @0.5, @1];
     }
     return _backgroundGradient;
@@ -126,7 +125,6 @@
     return height;
 }
 
-
 #pragma mark - TypingIndicatorView
 
 - (void)presentIndicatorWithName:(NSString *)name image:(UIImage *)image
@@ -134,18 +132,18 @@
     if (self.isVisible || name.length == 0 || !image) {
         return;
     }
-    
+
     NSString *text = [NSString stringWithFormat:@"%@ is typing...", name];
-    
+
     NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:text];
-    [attributedString addAttributes:@{NSFontAttributeName: [UIFont boldSystemFontOfSize:12.0]} range:[text rangeOfString:name]];
-    
+    [attributedString addAttributes:@{NSFontAttributeName: [UIFont boldSystemFontOfSize:12.0]}
+     range:[text rangeOfString:name]];
+
     self.titleLabel.attributedText = attributedString;
     self.thumbnailView.image = image;
 
     self.visible = YES;
 }
-
 
 #pragma mark - Hit Testing
 
@@ -157,10 +155,9 @@
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
     [super touchesEnded:touches withEvent:event];
-    
+
     [self dismissIndicator];
 }
-
 
 #pragma mark - Lifeterm
 

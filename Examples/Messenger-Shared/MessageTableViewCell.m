@@ -17,7 +17,7 @@
     if (self) {
         self.selectionStyle = UITableViewCellSelectionStyleNone;
         self.backgroundColor = [UIColor whiteColor];
-        
+
         [self configureSubviews];
     }
     return self;
@@ -29,18 +29,20 @@
     [self.contentView addSubview:self.titleLabel];
     [self.contentView addSubview:self.bodyLabel];
 
-    NSDictionary *views = @{@"thumbnailView": self.thumbnailView,
-                            @"titleLabel": self.titleLabel,
-                            @"bodyLabel": self.bodyLabel,
-                            };
-    
-    NSDictionary *metrics = @{@"tumbSize": @(kMessageTableViewCellAvatarHeight),
-                              @"padding": @15,
-                              @"right": @10,
-                              @"left": @5,
-                              @"attchSize": @80,
-                              };
-    
+    NSDictionary *views = @{
+        @"thumbnailView": self.thumbnailView,
+        @"titleLabel": self.titleLabel,
+        @"bodyLabel": self.bodyLabel,
+    };
+
+    NSDictionary *metrics = @{
+        @"tumbSize": @(kMessageTableViewCellAvatarHeight),
+        @"padding": @15,
+        @"right": @10,
+        @"left": @5,
+        @"attchSize": @80,
+    };
+
     [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-left-[thumbnailView(tumbSize)]-right-[titleLabel(>=0)]-right-|" options:0 metrics:metrics views:views]];
     [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-left-[thumbnailView(tumbSize)]-right-[bodyLabel(>=0)]-right-|" options:0 metrics:metrics views:views]];
     [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-right-[titleLabel(20)]-left-[bodyLabel(>=0@999)]-left-|" options:0 metrics:metrics views:views]];
@@ -50,17 +52,16 @@
 - (void)prepareForReuse
 {
     [super prepareForReuse];
-    
+
     self.selectionStyle = UITableViewCellSelectionStyleNone;
-    
+
     CGFloat pointSize = [MessageTableViewCell defaultFontSize];
-    
+
     self.titleLabel.font = [UIFont boldSystemFontOfSize:pointSize];
     self.bodyLabel.font = [UIFont systemFontOfSize:pointSize];
-    
+
     self.titleLabel.text = @"";
     self.bodyLabel.text = @"";
-
 }
 
 #pragma mark - Getters
@@ -100,7 +101,7 @@
         _thumbnailView.translatesAutoresizingMaskIntoConstraints = NO;
         _thumbnailView.userInteractionEnabled = NO;
         _thumbnailView.backgroundColor = [UIColor colorWithWhite:0.9 alpha:1.0];
-        
+
         _thumbnailView.layer.cornerRadius = kMessageTableViewCellAvatarHeight/2.0;
         _thumbnailView.layer.masksToBounds = YES;
     }
@@ -110,10 +111,10 @@
 + (CGFloat)defaultFontSize
 {
     CGFloat pointSize = 16.0;
-    
+
     NSString *contentSizeCategory = [[UIApplication sharedApplication] preferredContentSizeCategory];
     pointSize += [SLKTextView pointSizeDifferenceForCategory:contentSizeCategory];
-    
+
     return pointSize;
 }
 
