@@ -43,6 +43,7 @@
     CGRect visibleRect;
     visibleRect.origin = self.contentOffset;
     visibleRect.size = self.frame.size;
+
     return visibleRect;
 }
 

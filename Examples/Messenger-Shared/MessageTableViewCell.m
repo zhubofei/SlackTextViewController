@@ -20,6 +20,7 @@
 
         [self configureSubviews];
     }
+
     return self;
 }
 
@@ -77,6 +78,7 @@
         _titleLabel.textColor = [UIColor grayColor];
         _titleLabel.font = [UIFont boldSystemFontOfSize:[MessageTableViewCell defaultFontSize]];
     }
+
     return _titleLabel;
 }
 
@@ -91,6 +93,7 @@
         _bodyLabel.textColor = [UIColor darkGrayColor];
         _bodyLabel.font = [UIFont systemFontOfSize:[MessageTableViewCell defaultFontSize]];
     }
+
     return _bodyLabel;
 }
 
@@ -105,6 +108,7 @@
         _thumbnailView.layer.cornerRadius = kMessageTableViewCellAvatarHeight/2.0;
         _thumbnailView.layer.masksToBounds = YES;
     }
+
     return _thumbnailView;
 }
 

@@ -99,6 +99,7 @@ CGFloat const SLKAutoCompletionViewDefaultHeight = 140.0;
         self.scrollViewProxy = [self tableViewWithStyle:style];
         [self slk_commonInit];
     }
+
     return self;
 }
 
@@ -110,6 +111,7 @@ CGFloat const SLKAutoCompletionViewDefaultHeight = 140.0;
         self.scrollViewProxy = [self collectionViewWithLayout:layout];
         [self slk_commonInit];
     }
+
     return self;
 }
 
@@ -124,6 +126,7 @@ CGFloat const SLKAutoCompletionViewDefaultHeight = 140.0;
         self.scrollViewProxy = _scrollView;
         [self slk_commonInit];
     }
+
     return self;
 }
 
@@ -144,6 +147,7 @@ CGFloat const SLKAutoCompletionViewDefaultHeight = 140.0;
 
         [self slk_commonInit];
     }
+
     return self;
 }
 
@@ -258,6 +262,7 @@ CGFloat const SLKAutoCompletionViewDefaultHeight = 140.0;
         _tableView.delegate = self;
         _tableView.clipsToBounds = NO;
     }
+
     return _tableView;
 }
 
@@ -270,6 +275,7 @@ CGFloat const SLKAutoCompletionViewDefaultHeight = 140.0;
         _collectionView.dataSource = self;
         _collectionView.delegate = self;
     }
+
     return _collectionView;
 }
 
@@ -297,6 +303,7 @@ CGFloat const SLKAutoCompletionViewDefaultHeight = 140.0;
         _autoCompletionHairline.backgroundColor = _autoCompletionView.separatorColor;
         [_autoCompletionView addSubview:_autoCompletionHairline];
     }
+
     return _autoCompletionView;
 }
 
@@ -319,6 +326,7 @@ CGFloat const SLKAutoCompletionViewDefaultHeight = 140.0;
 
         [_textInputbar addGestureRecognizer:self.verticalPanGesture];
     }
+
     return _textInputbar;
 }
 
@@ -333,6 +341,7 @@ CGFloat const SLKAutoCompletionViewDefaultHeight = 140.0;
 
         [_typingIndicatorProxyView addObserver:self forKeyPath:@"visible" options:NSKeyValueObservingOptionNew context:nil];
     }
+
     return _typingIndicatorProxyView;
 }
 
@@ -341,6 +350,7 @@ CGFloat const SLKAutoCompletionViewDefaultHeight = 140.0;
     if ([_typingIndicatorProxyView isKindOfClass:[SLKTypingIndicatorView class]]) {
         return (SLKTypingIndicatorView *)self.typingIndicatorProxyView;
     }
+
     return nil;
 }
 
@@ -369,6 +379,7 @@ CGFloat const SLKAutoCompletionViewDefaultHeight = 140.0;
     if (self.navigationController) {
         return self.navigationController.modalPresentationStyle;
     }
+
     return [super modalPresentationStyle];
 }
 
@@ -471,6 +482,7 @@ CGFloat const SLKAutoCompletionViewDefaultHeight = 140.0;
     if ([name isEqualToString:UIKeyboardDidHideNotification]) {
         return SLKKeyboardDidHideNotification;
     }
+
     return nil;
 }
 
@@ -490,6 +502,7 @@ CGFloat const SLKAutoCompletionViewDefaultHeight = 140.0;
     if ([name isEqualToString:UIKeyboardDidHideNotification]) {
         return SLKKeyboardStatusDidHide;
     }
+
     return -1;
 }
 
@@ -501,6 +514,7 @@ CGFloat const SLKAutoCompletionViewDefaultHeight = 140.0;
         (self.keyboardStatus == 3 && status == 0)) {
         return NO;
     }
+
     return YES;
 }
 
@@ -686,6 +700,7 @@ CGFloat const SLKAutoCompletionViewDefaultHeight = 140.0;
         if (self.isAutoCompleting) {
             [self cancelAutoCompletion];
         }
+
         return;
     }
 
@@ -926,6 +941,7 @@ CGFloat const SLKAutoCompletionViewDefaultHeight = 140.0;
         if ([gesture.view isEqual:self.textInputbar] && gestureVelocity.y < 0) {
             [self presentKeyboard:YES];
         }
+
         return;
 #endif
     }
@@ -1754,6 +1770,7 @@ CGFloat const SLKAutoCompletionViewDefaultHeight = 140.0;
     if (key == nil) {
         return nil;
     }
+
     return [NSString stringWithFormat:@"%@.%@", SLKTextViewControllerDomain, key];
 }
 
@@ -2033,6 +2050,7 @@ CGFloat const SLKAutoCompletionViewDefaultHeight = 140.0;
 
     if (self.isInverted) {
         [self.scrollViewProxy slk_scrollToBottomAnimated:YES];
+
         return NO;
     }
     else {

@@ -121,6 +121,7 @@
     // Aborts in case minimum requieres are not fufilled
     if (text.length == 0 || location < 0 || (range.location+range.length) > text.length) {
         *rangePointer = NSMakeRange(0, 0);
+
         return nil;
     }
 

@@ -57,6 +57,7 @@ NSString *const SLKTextInputbarDidMoveNotification = @"SLKTextInputbarDidMoveNot
         self.textViewClass = textViewClass;
         [self slk_commonInit];
     }
+
     return self;
 }
 
@@ -65,6 +66,7 @@ NSString *const SLKTextInputbarDidMoveNotification = @"SLKTextInputbarDidMoveNot
     if (self = [super init]) {
         [self slk_commonInit];
     }
+
     return self;
 }
 
@@ -73,6 +75,7 @@ NSString *const SLKTextInputbarDidMoveNotification = @"SLKTextInputbarDidMoveNot
     if (self = [super initWithCoder:coder]) {
         [self slk_commonInit];
     }
+
     return self;
 }
 
@@ -149,6 +152,7 @@ NSString *const SLKTextInputbarDidMoveNotification = @"SLKTextInputbarDidMoveNot
         _textView.layer.borderWidth = 0.5;
         _textView.layer.borderColor = [UIColor colorWithRed:200.0/255.0 green:200.0/255.0 blue:205.0/255.0 alpha:1.0].CGColor;
     }
+
     return _textView;
 }
 
@@ -170,6 +174,7 @@ NSString *const SLKTextInputbarDidMoveNotification = @"SLKTextInputbarDidMoveNot
         _leftButton.translatesAutoresizingMaskIntoConstraints = NO;
         _leftButton.titleLabel.font = [UIFont systemFontOfSize:15.0];
     }
+
     return _leftButton;
 }
 
@@ -185,6 +190,7 @@ NSString *const SLKTextInputbarDidMoveNotification = @"SLKTextInputbarDidMoveNot
 
         [_rightButton setTitle:title forState:UIControlStateNormal];
     }
+
     return _rightButton;
 }
 
@@ -217,6 +223,7 @@ NSString *const SLKTextInputbarDidMoveNotification = @"SLKTextInputbarDidMoveNot
         [_editorContentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[rightButton]|" options:0 metrics:metrics views:views]];
         [_editorContentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[label]|" options:0 metrics:metrics views:views]];
     }
+
     return _editorContentView;
 }
 
@@ -233,6 +240,7 @@ NSString *const SLKTextInputbarDidMoveNotification = @"SLKTextInputbarDidMoveNot
 
         _editorTitle.text = title;
     }
+
     return _editorTitle;
 }
 
@@ -248,6 +256,7 @@ NSString *const SLKTextInputbarDidMoveNotification = @"SLKTextInputbarDidMoveNot
 
         [_editorLeftButton setTitle:title forState:UIControlStateNormal];
     }
+
     return _editorLeftButton;
 }
 
@@ -264,6 +273,7 @@ NSString *const SLKTextInputbarDidMoveNotification = @"SLKTextInputbarDidMoveNot
 
         [_editorRightButton setTitle:title forState:UIControlStateNormal];
     }
+
     return _editorRightButton;
 }
 
@@ -278,6 +288,7 @@ NSString *const SLKTextInputbarDidMoveNotification = @"SLKTextInputbarDidMoveNot
 
         _charCountLabel.hidden = NO;
     }
+
     return _charCountLabel;
 }
 
@@ -332,6 +343,7 @@ NSString *const SLKTextInputbarDidMoveNotification = @"SLKTextInputbarDidMoveNot
     if (self.maxCharCount > 0 && text.length > self.maxCharCount) {
         return YES;
     }
+
     return NO;
 }
 
@@ -364,6 +376,7 @@ NSString *const SLKTextInputbarDidMoveNotification = @"SLKTextInputbarDidMoveNot
             return 0.0;
         }
     }
+
     return self.contentInset.right;
 }
 
@@ -410,6 +423,7 @@ NSString *const SLKTextInputbarDidMoveNotification = @"SLKTextInputbarDidMoveNot
 
     if (UIEdgeInsetsEqualToEdgeInsets(self.contentInset, UIEdgeInsetsZero)) {
         _contentInset = insets;
+
         return;
     }
 

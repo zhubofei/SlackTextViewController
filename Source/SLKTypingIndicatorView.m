@@ -44,6 +44,7 @@
     if (self = [super init]) {
         [self slk_commonInit];
     }
+
     return self;
 }
 
@@ -52,6 +53,7 @@
     if (self = [super initWithCoder:coder]) {
         [self slk_commonInit];
     }
+
     return self;
 }
 
@@ -114,6 +116,7 @@
         _textLabel.contentMode = UIViewContentModeTopLeft;
         _textLabel.userInteractionEnabled = NO;
     }
+
     return _textLabel;
 }
 
@@ -168,6 +171,7 @@
     CGFloat height = self.textFont.lineHeight;
     height += self.contentInset.top;
     height += self.contentInset.bottom;
+
     return height;
 }
 
@@ -181,6 +185,7 @@
 
     if (UIEdgeInsetsEqualToEdgeInsets(self.contentInset, UIEdgeInsetsZero)) {
         _contentInset = insets;
+
         return;
     }
 
@@ -270,6 +275,7 @@
             return timer;
         }
     }
+
     return nil;
 }
 

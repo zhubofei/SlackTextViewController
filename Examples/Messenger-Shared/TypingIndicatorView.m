@@ -24,6 +24,7 @@
     if (self) {
         [self configureSubviews];
     }
+
     return self;
 }
 
@@ -79,6 +80,7 @@
         _thumbnailView.layer.cornerRadius = kTypingIndicatorViewAvatarHeight/2.0;
         _thumbnailView.layer.masksToBounds = YES;
     }
+
     return _thumbnailView;
 }
 
@@ -95,6 +97,7 @@
         _titleLabel.font = [UIFont systemFontOfSize:12.0];
         _titleLabel.textColor = [UIColor lightGrayColor];
     }
+
     return _titleLabel;
 }
 
@@ -110,6 +113,7 @@
 
         _backgroundGradient.locations = @[@0, @0.5, @1];
     }
+
     return _backgroundGradient;
 }
 
@@ -122,6 +126,7 @@
 {
     CGFloat height = 13.0;
     height += self.titleLabel.font.lineHeight;
+
     return height;
 }
 

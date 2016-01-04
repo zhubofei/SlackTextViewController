@@ -67,6 +67,7 @@ static NSString *const SLKTextViewGenericFormattingSelectorPrefix = @"slk_format
     if (self = [super initWithFrame:frame textContainer:textContainer]) {
         [self slk_commonInit];
     }
+
     return self;
 }
 
@@ -75,6 +76,7 @@ static NSString *const SLKTextViewGenericFormattingSelectorPrefix = @"slk_format
     if (self = [super initWithCoder:coder]) {
         [self slk_commonInit];
     }
+
     return self;
 }
 
@@ -161,6 +163,7 @@ static NSString *const SLKTextViewGenericFormattingSelectorPrefix = @"slk_format
 
         [self addSubview:_placeholderLabel];
     }
+
     return _placeholderLabel;
 }
 
@@ -237,6 +240,7 @@ static NSString *const SLKTextViewGenericFormattingSelectorPrefix = @"slk_format
     if (_registeredFormattingSymbols.count == 0) {
         return NO;
     }
+
     return _autoCompleteFormatting;
 }
 
@@ -254,6 +258,7 @@ static NSString *const SLKTextViewGenericFormattingSelectorPrefix = @"slk_format
             SLKTextViewPastedItemMediaType: @(mediaType),
             SLKTextViewPastedItemData: data
         };
+
         return userInfo;
     }
     if ([[UIPasteboard generalPasteboard] URL]) {
@@ -272,6 +277,7 @@ static NSString *const SLKTextViewGenericFormattingSelectorPrefix = @"slk_format
     if ([self slk_pasteboardContentType].length > 0) {
         return YES;
     }
+
     return NO;
 }
 
@@ -373,6 +379,7 @@ SLKPastableMediaType SLKPastableMediaTypeFromNSString(NSString *string)
     if ([string isEqualToString:NSStringFromSLKPastableMediaType(SLKPastableMediaTypeImages)]) {
         return SLKPastableMediaTypeImages;
     }
+
     return SLKPastableMediaTypeNone;
 }
 
@@ -381,6 +388,7 @@ SLKPastableMediaType SLKPastableMediaTypeFromNSString(NSString *string)
     if (self.numberOfLines >= self.maxNumberOfLines) {
         return YES;
     }
+
     return NO;
 }
 
@@ -389,6 +397,7 @@ SLKPastableMediaType SLKPastableMediaTypeFromNSString(NSString *string)
     if (self.placeholder.length == 0 || self.text.length > 0) {
         return YES;
     }
+
     return NO;
 }
 
@@ -623,12 +632,14 @@ SLKPastableMediaType SLKPastableMediaTypeFromNSString(NSString *string)
             if (self.undoManager.undoActionIsDiscardable) {
                 return NO;
             }
+
             return [self.undoManager canUndo];
         }
         if (action == @selector(slk_redo:)) {
             if (self.undoManager.redoActionIsDiscardable) {
                 return NO;
             }
+
             return [self.undoManager canRedo];
         }
     }
@@ -664,6 +675,7 @@ SLKPastableMediaType SLKPastableMediaTypeFromNSString(NSString *string)
     if ([super methodSignatureForSelector:sel]) {
         return [super methodSignatureForSelector:sel];
     }
+
     return [super methodSignatureForSelector:@selector(slk_format:)];
 }
 
@@ -917,6 +929,7 @@ SLKPastableMediaType SLKPastableMediaTypeFromNSString(NSString *string)
 
 - (void)slk_willShowMenuController:(NSNotification *)notification
 {
+    //  Do something
 }
 
 - (void)slk_didHideMenuController:(NSNotification *)notification
@@ -1085,6 +1098,7 @@ SLKPastableMediaType SLKPastableMediaTypeFromNSString(NSString *string)
             closestPosition = checkPosition;
         }
     }
+
     return closestPosition;
 }
 
@@ -1096,6 +1110,7 @@ SLKPastableMediaType SLKPastableMediaTypeFromNSString(NSString *string)
     BOOL directionChanged = self.verticalMoveDirection != direction;
 
     BOOL newMovement = noPreviousStartPosition || caretMovedSinceLastPosition || directionChanged;
+
     return newMovement;
 }
 

@@ -43,6 +43,7 @@ static NSString *AutoCompletionCellIdentifier = @"AutoCompletionCell";
     if (self) {
         [self commonInit];
     }
+
     return self;
 }
 
@@ -52,6 +53,7 @@ static NSString *AutoCompletionCellIdentifier = @"AutoCompletionCell";
     if (self) {
         [self commonInit];
     }
+
     return self;
 }
 
@@ -494,6 +496,7 @@ static NSString *AutoCompletionCellIdentifier = @"AutoCompletionCell";
 - (CGFloat)heightForAutoCompletionView
 {
     CGFloat cellHeight = [self.autoCompletionView.delegate tableView:self.autoCompletionView heightForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+
     return cellHeight*self.searchResult.count;
 }
 
