@@ -192,9 +192,9 @@ CGFloat const SLKAutoCompletionViewDefaultHeight = 140.0;
     [self.view layoutIfNeeded];
 
     [UIView performWithoutAnimation:^{
-         // Reloads any cached text
-         [self slk_reloadTextView];
-     }];
+        // Reloads any cached text
+        [self slk_reloadTextView];
+    }];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -586,8 +586,8 @@ CGFloat const SLKAutoCompletionViewDefaultHeight = 140.0;
 
     if (!animated) {
         [UIView performWithoutAnimation:^{
-             [self.textView becomeFirstResponder];
-         }];
+            [self.textView becomeFirstResponder];
+        }];
     }
     else {
         [self.textView becomeFirstResponder];
@@ -603,8 +603,8 @@ CGFloat const SLKAutoCompletionViewDefaultHeight = 140.0;
 
     if (!animated) {
         [UIView performWithoutAnimation:^{
-             [self.textView resignFirstResponder];
-         }];
+            [self.textView resignFirstResponder];
+        }];
     }
     else {
         [self.textView resignFirstResponder];
@@ -656,10 +656,10 @@ CGFloat const SLKAutoCompletionViewDefaultHeight = 140.0;
             [self.view slk_animateLayoutIfNeededWithBounce:bounces
                                                    options:UIViewAnimationOptionCurveEaseInOut|UIViewAnimationOptionLayoutSubviews|UIViewAnimationOptionBeginFromCurrentState
                                                 animations:^{
-                 if (self.textInputbar.isEditing) {
-                     [self.textView slk_scrollToCaretPositonAnimated:NO];
-                 }
-             }];
+                if (self.textInputbar.isEditing) {
+                    [self.textView slk_scrollToCaretPositonAnimated:NO];
+                }
+            }];
         }
         else {
             [self.view layoutIfNeeded];
@@ -818,11 +818,11 @@ CGFloat const SLKAutoCompletionViewDefaultHeight = 140.0;
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title message:nil preferredStyle:UIAlertControllerStyleAlert];
 
     [alertController addAction:[UIAlertAction actionWithTitle:acceptTitle style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-                                    // Clears the text but doesn't clear the undo manager
-                                    if (self.shakeToClearEnabled) {
-                                        [self.textView slk_clearText:NO];
-                                    }
-                                }]];
+        // Clears the text but doesn't clear the undo manager
+        if (self.shakeToClearEnabled) {
+            [self.textView slk_clearText:NO];
+        }
+    }]];
 
     [alertController addAction:[UIAlertAction actionWithTitle:cancelTitle style:UIAlertActionStyleCancel handler:NULL]];
 
@@ -1041,22 +1041,22 @@ CGFloat const SLKAutoCompletionViewDefaultHeight = 140.0;
                                   delay:0.0
                                 options:UIViewAnimationOptionCurveEaseInOut|UIViewAnimationOptionBeginFromCurrentState
                              animations:^{
-                 [self.view layoutIfNeeded];
-                 keyboardView.frame = keyboardFrame;
-             }
+                [self.view layoutIfNeeded];
+                keyboardView.frame = keyboardFrame;
+            }
                              completion:^(BOOL finished) {
-                 if (hide) {
-                     [self dismissKeyboard:NO];
-                 }
+                if (hide) {
+                    [self dismissKeyboard:NO];
+                }
 
-                 // Tear down
-                 startPoint = CGPointZero;
-                 originalFrame = CGRectZero;
-                 dragging = NO;
-                 presenting = NO;
+                // Tear down
+                startPoint = CGPointZero;
+                originalFrame = CGRectZero;
+                dragging = NO;
+                presenting = NO;
 
-                 self.movingKeyboard = NO;
-             }];
+                self.movingKeyboard = NO;
+            }];
 
             break;
         }
@@ -1514,10 +1514,10 @@ CGFloat const SLKAutoCompletionViewDefaultHeight = 140.0;
                                            options:UIViewAnimationOptionCurveEaseInOut
                                         animations:NULL
                                         completion:^(BOOL finished) {
-         if (!typingIndicatorView.isVisible) {
-             typingIndicatorView.hidden = YES;
-         }
-     }];
+        if (!typingIndicatorView.isVisible) {
+            typingIndicatorView.hidden = YES;
+        }
+    }];
 }
 
 - (void)slk_willTerminateApplication:(NSNotification *)notification
@@ -1673,7 +1673,7 @@ CGFloat const SLKAutoCompletionViewDefaultHeight = 140.0;
     }
 
     NSRange range;
-    NSString *word = [self.textView slk_wordAtCaretRange:& range];
+    NSString *word = [self.textView slk_wordAtCaretRange:&range];
 
     [self slk_invalidateAutoCompletion];
 
@@ -1901,7 +1901,7 @@ CGFloat const SLKAutoCompletionViewDefaultHeight = 140.0;
             if (prefixRange.location != NSNotFound && ![invalidCharacters characterIsMember:[charAfterSymbol characterAtIndex:0]]) {
                 if ([self textView:textView shouldInsertSuffixForFormattingWithSymbol:symbol prefixRange:prefixRange]) {
                     NSRange suffixRange;
-                    [textView slk_wordAtRange:wordRange rangeInText:& suffixRange];
+                    [textView slk_wordAtRange:wordRange rangeInText:&suffixRange];
 
                     // Skip if the detected word already has a suffix
                     if ([[textView.text substringWithRange:suffixRange] hasSuffix:symbol]) {

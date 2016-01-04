@@ -35,8 +35,8 @@
     }
     else {
         [UIView performWithoutAnimation:^{
-             [self scrollRangeToVisible:self.selectedRange];
-         }];
+            [self scrollRangeToVisible:self.selectedRange];
+        }];
     }
 }
 
@@ -50,8 +50,8 @@
     }
     else {
         [UIView performWithoutAnimation:^{
-             [self scrollRectToVisible:rect animated:NO];
-         }];
+            [self scrollRectToVisible:rect animated:NO];
+        }];
     }
 }
 

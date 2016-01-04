@@ -197,9 +197,9 @@ static NSString *AutoCompletionCellIdentifier = @"AutoCompletionCell";
         // This will cause the typing indicator to show after a delay ¯\_(ツ)_/¯
         [LoremIpsum asyncPlaceholderImageWithSize:imgSize
                                        completion:^(UIImage *image) {
-             UIImage *thumbnail = [UIImage imageWithCGImage:image.CGImage scale:scale orientation:UIImageOrientationUp];
-             [view presentIndicatorWithName:[LoremIpsum name] image:thumbnail];
-         }];
+            UIImage *thumbnail = [UIImage imageWithCGImage:image.CGImage scale:scale orientation:UIImageOrientationUp];
+            [view presentIndicatorWithName:[LoremIpsum name] image:thumbnail];
+        }];
 #else
         [self.typingIndicatorView insertUsername:[LoremIpsum name]];
 #endif
@@ -216,8 +216,8 @@ static NSString *AutoCompletionCellIdentifier = @"AutoCompletionCell";
         alertController.popoverPresentationController.sourceRect = gesture.view.frame;
 
         [alertController addAction:[UIAlertAction actionWithTitle:@"Edit Message" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-                                        [self editCellMessage:gesture];
-                                    }]];
+            [self editCellMessage:gesture];
+        }]];
 
         [alertController addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:NULL]];
 
@@ -292,20 +292,20 @@ static NSString *AutoCompletionCellIdentifier = @"AutoCompletionCell";
 
     [UIView animateWithDuration:0.25
                      animations:^{
-         _pipWindow.alpha = 1.0;
-     }];
+        _pipWindow.alpha = 1.0;
+    }];
 }
 
 - (void)hidePIPWindow:(id)sender
 {
     [UIView animateWithDuration:0.3
                      animations:^{
-         _pipWindow.alpha = 0.0;
-     }
+        _pipWindow.alpha = 0.0;
+    }
                      completion:^(BOOL finished) {
-         _pipWindow.hidden = YES;
-         _pipWindow = nil;
-     }];
+        _pipWindow.hidden = YES;
+        _pipWindow = nil;
+    }];
 }
 
 - (void)textInputbarDidMove:(NSNotification *)note

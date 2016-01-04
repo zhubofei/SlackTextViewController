@@ -26,8 +26,8 @@
     [self.window makeKeyAndVisible];
 
     [self.window.rootViewController presentViewController:navVC animated:YES completion:^{
-         [messageVC presentKeyboard:YES];
-     }];
+        [messageVC presentKeyboard:YES];
+    }];
 
     return YES;
 }

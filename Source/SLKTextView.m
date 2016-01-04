@@ -130,9 +130,9 @@ static NSString *const SLKTextViewGenericFormattingSelectorPrefix = @"slk_format
 
     if (!self.placeholderLabel.hidden) {
         [UIView performWithoutAnimation:^{
-             self.placeholderLabel.frame = [self slk_placeholderRectThatFits:self.bounds];
-             [self sendSubviewToBack:self.placeholderLabel];
-         }];
+            self.placeholderLabel.frame = [self slk_placeholderRectThatFits:self.bounds];
+            [self sendSubviewToBack:self.placeholderLabel];
+        }];
     }
 }
 
