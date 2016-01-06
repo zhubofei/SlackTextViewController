@@ -23,15 +23,16 @@
 + (NSString *)wordsWithNumber:(NSInteger)numberOfWords
 {
     NSArray *allWords = [[[self loremIpsum] stringByReplacingOccurrencesOfString:@"." withString:@""] componentsSeparatedByString:@" "];
-    
+
     if (numberOfWords > allWords.count) {
         numberOfWords = allWords.count -1;
     }
-    
+
     NSMutableArray *words = [NSMutableArray arrayWithCapacity:numberOfWords];
     for (NSInteger i = 0; i < numberOfWords; i++) {
         [words addObject:[allWords objectAtIndex:i]];
     }
+
     return [words componentsJoinedByString:@" "];
 }
 
@@ -43,15 +44,16 @@
 + (NSString *)sentencesWithNumber:(NSInteger)numberOfSentences
 {
     NSArray *allSentences = [[self loremIpsum] componentsSeparatedByString:@"."];
-    
+
     if (numberOfSentences > allSentences.count) {
         numberOfSentences = allSentences.count -1;
     }
-    
+
     NSMutableArray *sentences = [NSMutableArray arrayWithCapacity:numberOfSentences];
     for (NSInteger i = 0; i < numberOfSentences; i++) {
         [sentences addObject:[allSentences objectAtIndex:i]];
     }
+
     return [[sentences componentsJoinedByString:@". "] stringByAppendingString:@"."];
 }
 
