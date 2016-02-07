@@ -2,8 +2,8 @@
 # https://github.com/bengardner/uncrustify
 
 # paths variables
-EXEC_PATH=${SRCROOT}/uncrustify
-CONFIG_PATH=${SRCROOT}/uncrustify_config.cfg
+EXEC_PATH=${SRCROOT}/Uncrustify/uncrustify
+CONFIG_PATH=${SRCROOT}/Uncrustify/uncrustify_config.cfg
 
 # executes uncrustfy
 # sets language to Objective-C
