@@ -1,17 +1,9 @@
 //
-//   Copyright 2014-2016 Slack Technologies, Inc.
+//  SlackTextViewController
+//  https://github.com/slackhq/SlackTextViewController
 //
-//   Licensed under the Apache License, Version 2.0 (the "License");
-//   you may not use this file except in compliance with the License.
-//   You may obtain a copy of the License at
-//
-//       http://www.apache.org/licenses/LICENSE-2.0
-//
-//   Unless required by applicable law or agreed to in writing, software
-//   distributed under the License is distributed on an "AS IS" BASIS,
-//   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//   See the License for the specific language governing permissions and
-//   limitations under the License.
+//  Copyright 2014-2016 Slack Technologies, Inc.
+//  Licence: MIT-Licence
 //
 
 #import "SLKTextInput.h"
@@ -27,7 +19,7 @@
 
 #pragma mark - Public Methods
 
-- (void)lookForPrefixes:(NSSet *)prefixes completion:(void (^)(NSString *prefix, NSString *word, NSRange wordRange))completion
+- (void)lookForPrefixes:(NSSet<NSString *> *)prefixes completion:(void (^)(NSString *prefix, NSString *word, NSRange wordRange))completion
 {
     if (![self conformsToProtocol:@protocol(SLKTextInput)]) {
         return;
@@ -41,33 +33,26 @@
         return;
     }
     
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        
-        NSRange wordRange;
-        NSString *word = [self wordAtCaretRange:&wordRange];
-        
-        if (word.length > 0) {
-            for (NSString *prefix in prefixes) {
-                if ([word hasPrefix:prefix]) {
-                    
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        if (completion) {
-                            completion(prefix, word, wordRange);
-                        }
-                    });
-                    
-                    return;
+    NSRange wordRange;
+    NSString *word = [self wordAtCaretRange:&wordRange];
+    
+    if (word.length > 0) {
+        for (NSString *prefix in prefixes) {
+            if ([word hasPrefix:prefix]) {
+                
+                if (completion) {
+                    completion(prefix, word, wordRange);
                 }
+                
+                return;
             }
         }
-        
-        // Fallback to an empty callback
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if (completion) {
-                completion(nil, nil, NSMakeRange(0,0));
-            }
-        });
-    });
+    }
+    
+    // Fallback to an empty callback
+    if (completion) {
+        completion(nil, nil, NSMakeRange(0,0));
+    }
 }
 
 - (NSString *)wordAtCaretRange:(NSRangePointer)range

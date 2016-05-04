@@ -1,17 +1,9 @@
 //
-//   Copyright 2014-2016 Slack Technologies, Inc.
+//  SlackTextViewController
+//  https://github.com/slackhq/SlackTextViewController
 //
-//   Licensed under the Apache License, Version 2.0 (the "License");
-//   you may not use this file except in compliance with the License.
-//   You may obtain a copy of the License at
-//
-//       http://www.apache.org/licenses/LICENSE-2.0
-//
-//   Unless required by applicable law or agreed to in writing, software
-//   distributed under the License is distributed on an "AS IS" BASIS,
-//   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//   See the License for the specific language governing permissions and
-//   limitations under the License.
+//  Copyright 2014-2016 Slack Technologies, Inc.
+//  Licence: MIT-Licence
 //
 
 #import "SLKTextViewController.h"
@@ -92,7 +84,8 @@ CGFloat const SLKAutoCompletionViewDefaultHeight = 140.0;
 - (instancetype)initWithTableViewStyle:(UITableViewStyle)style
 {
     NSAssert([self class] != [SLKTextViewController class], @"Oops! You must subclass SLKTextViewController.");
-    
+    NSAssert(style == UITableViewStylePlain || style == UITableViewStyleGrouped, @"Oops! You must pass a valid UITableViewStyle.");
+
     if (self = [super initWithNibName:nil bundle:nil])
     {
         self.scrollViewProxy = [self tableViewWithStyle:style];
@@ -104,7 +97,8 @@ CGFloat const SLKAutoCompletionViewDefaultHeight = 140.0;
 - (instancetype)initWithCollectionViewLayout:(UICollectionViewLayout *)layout
 {
     NSAssert([self class] != [SLKTextViewController class], @"Oops! You must subclass SLKTextViewController.");
-    
+    NSAssert([layout isKindOfClass:[UICollectionViewLayout class]], @"Oops! You must pass a valid UICollectionViewLayout object.");
+
     if (self = [super initWithNibName:nil bundle:nil])
     {
         self.scrollViewProxy = [self collectionViewWithLayout:layout];
@@ -116,7 +110,8 @@ CGFloat const SLKAutoCompletionViewDefaultHeight = 140.0;
 - (instancetype)initWithScrollView:(UIScrollView *)scrollView
 {
     NSAssert([self class] != [SLKTextViewController class], @"Oops! You must subclass SLKTextViewController.");
-    
+    NSAssert([scrollView isKindOfClass:[UIScrollView class]], @"Oops! You must pass a valid UIScrollView object.");
+
     if (self = [super initWithNibName:nil bundle:nil])
     {
         _scrollView = scrollView;
@@ -131,7 +126,8 @@ CGFloat const SLKAutoCompletionViewDefaultHeight = 140.0;
 - (instancetype)initWithCoder:(NSCoder *)decoder
 {
     NSAssert([self class] != [SLKTextViewController class], @"Oops! You must subclass SLKTextViewController.");
-    
+    NSAssert([decoder isKindOfClass:[NSCoder class]], @"Oops! You must pass a valid decoder object.");
+
     if (self = [super initWithCoder:decoder])
     {
         UITableViewStyle tableViewStyle = [[self class] tableViewStyleForCoder:decoder];
@@ -271,6 +267,7 @@ CGFloat const SLKAutoCompletionViewDefaultHeight = 140.0;
 {
     if (!_collectionView) {
         _collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:layout];
+        _collectionView.backgroundColor = [UIColor whiteColor];
         _collectionView.translatesAutoresizingMaskIntoConstraints = NO;
         _collectionView.scrollsToTop = YES;
         _collectionView.dataSource = self;
@@ -580,14 +577,9 @@ CGFloat const SLKAutoCompletionViewDefaultHeight = 140.0;
         return NO;
     }
     
-    // Forces the keyboard status when didHide to avoid any inconsistency.
-    if (status == SLKKeyboardStatusDidHide) {
-        _keyboardStatus = status;
-        return YES;
-    }
-    
     // Skips illogical conditions
-    if ([self slk_isIllogicalKeyboardStatus:status]) {
+    // Forces the keyboard status when didHide to avoid any inconsistency.
+    if (status != SLKKeyboardStatusDidHide && [self slk_isIllogicalKeyboardStatus:status]) {
         return NO;
     }
     
@@ -701,7 +693,7 @@ CGFloat const SLKAutoCompletionViewDefaultHeight = 140.0;
 - (void)textSelectionDidChange
 {
     // The text view must be first responder
-    if (![self.textView isFirstResponder]) {
+    if (![self.textView isFirstResponder] || self.keyboardStatus != SLKKeyboardStatusDidShow) {
         return;
     }
     
@@ -1332,6 +1324,15 @@ CGFloat const SLKAutoCompletionViewDefaultHeight = 140.0;
         return;
     }
     
+    UIResponder *currentResponder = [UIResponder slk_currentFirstResponder];
+    
+    // Skips if it's not the expected textView and shouldn't force adjustment of the text input bar.
+    // This will also dismiss the text input bar if it's visible, and exit auto-completion mode if enabled.
+    if (![currentResponder isEqual:self.textView] && ![self forceTextInputbarAdjustmentForResponder:currentResponder]) {
+        [self slk_dismissTextInputbarIfNeeded];
+        return;
+    }
+    
     SLKKeyboardStatus status = [self slk_keyboardStatusForNotification:notification];
     
     // Skips if it's the current status
@@ -1345,20 +1346,6 @@ CGFloat const SLKAutoCompletionViewDefaultHeight = 140.0;
         [self slk_postKeyboarStatusNotification:notification];
     }
     
-    // Skips this it's not the expected textView and shouldn't force adjustment of the text input bar.
-    // This will also dismiss the text input bar if it's visible, and exit auto-completion mode if enabled.
-    if (![self.textView isFirstResponder]) {
-        // Detect the current first responder. If there is no first responder, we should just ignore these notifications.
-        UIResponder *currentResponder = [UIResponder slk_currentFirstResponder];
-        
-        if (!currentResponder) {
-            return;
-        }
-        else if (![self forceTextInputbarAdjustmentForResponder:currentResponder]) {
-            return [self slk_dismissTextInputbarIfNeeded];
-        }
-    }
-    
     // Programatically stops scrolling before updating the view constraints (to avoid scrolling glitch).
     if (status == SLKKeyboardStatusWillShow) {
         [self.scrollViewProxy slk_stopScrolling];
@@ -1369,6 +1356,9 @@ CGFloat const SLKAutoCompletionViewDefaultHeight = 140.0;
         [self slk_hideAutoCompletionViewIfNeeded];
     }
     
+    // Stores the previous keyboard height
+    CGFloat previousKeyboardHeight = self.keyboardHC.constant;
+
     // Updates the height constraints' constants
     self.keyboardHC.constant = [self slk_appropriateKeyboardHeightFromNotification:notification];
     self.scrollViewHC.constant = [self slk_appropriateScrollViewHeight];
@@ -1394,7 +1384,8 @@ CGFloat const SLKAutoCompletionViewDefaultHeight = 140.0;
     
     // Begin and end frames are the same when the keyboard is shown during navigation controller's push animation.
     // The animation happens in window coordinates (slides from right to left) but doesn't in the view controller's view coordinates.
-    if (!CGRectEqualToRect(beginFrame, endFrame))
+    // Second condition: check if the height of the keyboard changed.
+    if (!CGRectEqualToRect(beginFrame, endFrame) || fabs(previousKeyboardHeight - self.keyboardHC.constant) > 0.0)
     {
         // Only for this animation, we set bo to bounce since we want to give the impression that the text input is glued to the keyboard.
         [self.view slk_animateLayoutIfNeededWithDuration:duration
@@ -1516,7 +1507,7 @@ CGFloat const SLKAutoCompletionViewDefaultHeight = 140.0;
     }
     
     // Notifies only if the pasted item is nested in a dictionary.
-    if ([notification.userInfo isKindOfClass:[NSDictionary class]]) {
+    if (notification.userInfo) {
         [self didPasteMediaContent:notification.userInfo];
     }
 }
@@ -1534,39 +1525,31 @@ CGFloat const SLKAutoCompletionViewDefaultHeight = 140.0;
     }
 }
 
-- (void)slk_willShowOrHideTypeIndicatorView:(UIView <SLKTypingIndicatorProtocol> *)typingIndicatorView
+- (void)slk_willShowOrHideTypeIndicatorView:(UIView <SLKTypingIndicatorProtocol> *)view
 {
     // Skips if the typing indicator should not show. Ignores the checking if it's trying to hide.
-    if (![self canShowTypingIndicator] && typingIndicatorView.isVisible) {
+    if (![self canShowTypingIndicator] && view.isVisible) {
         return;
     }
     
-    CGFloat systemLayoutSizeHeight = [typingIndicatorView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height;
-    CGFloat height = typingIndicatorView.isVisible ? systemLayoutSizeHeight : 0.0;
+    CGFloat systemLayoutSizeHeight = [view systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height;
+    CGFloat height = view.isVisible ? systemLayoutSizeHeight : 0.0;
     
     self.typingIndicatorViewHC.constant = height;
     self.scrollViewHC.constant -= height;
     
-    if (typingIndicatorView.isVisible) {
-        typingIndicatorView.hidden = NO;
+    if (view.isVisible) {
+        view.hidden = NO;
     }
     
     [self.view slk_animateLayoutIfNeededWithBounce:self.bounces
                                            options:UIViewAnimationOptionCurveEaseInOut
                                         animations:NULL
                                         completion:^(BOOL finished) {
-                                            if (!typingIndicatorView.isVisible) {
-                                                typingIndicatorView.hidden = YES;
+                                            if (!view.isVisible) {
+                                                view.hidden = YES;
                                             }
                                         }];
-}
-
-- (void)slk_willTerminateApplication:(NSNotification *)notification
-{
-    // Caches the text before it's too late!
-    if (self.isViewVisible) {
-        [self slk_cacheTextView];
-    }
 }
 
 
@@ -1585,21 +1568,24 @@ CGFloat const SLKAutoCompletionViewDefaultHeight = 140.0;
 
 #pragma mark - Auto-Completion Text Processing
 
-- (void)registerPrefixesForAutoCompletion:(NSArray *)prefixes
+- (void)registerPrefixesForAutoCompletion:(NSArray <NSString *> *)prefixes
 {
     if (prefixes.count == 0) {
         return;
     }
     
     NSMutableSet *set = [NSMutableSet setWithSet:self.registeredPrefixes];
-    [set addObjectsFromArray:prefixes];
+    [set addObjectsFromArray:[prefixes copy]];
     
     _registeredPrefixes = [NSSet setWithSet:set];
 }
 
 - (BOOL)shouldProcessTextForAutoCompletion:(NSString *)text
 {
-    // Always return YES by default.
+    if (!_registeredPrefixes || _registeredPrefixes.count == 0) {
+        return NO;
+    }
+    
     return YES;
 }
 
@@ -1878,11 +1864,6 @@ CGFloat const SLKAutoCompletionViewDefaultHeight = 140.0;
     }
     
     BOOL newWordInserted = ([text rangeOfCharacterFromSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]].location != NSNotFound);
-    
-    // It should not change if auto-completion is active and trying to replace with an auto-correction suggested text.
-    if (self.isAutoCompleting && text.length > 1) {
-        return NO;
-    }
     
     // Records text for undo for every new word
     if (newWordInserted) {
@@ -2237,8 +2218,9 @@ CGFloat const SLKAutoCompletionViewDefaultHeight = 140.0;
     [notificationCenter addObserver:self selector:@selector(slk_didShakeTextView:) name:SLKTextViewDidShakeNotification object:nil];
     
     // Application notifications
-    [notificationCenter addObserver:self selector:@selector(slk_willTerminateApplication:) name:UIApplicationWillTerminateNotification object:nil];
-    [notificationCenter addObserver:self selector:@selector(slk_willTerminateApplication:) name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
+    [notificationCenter addObserver:self selector:@selector(slk_cacheTextView) name:UIApplicationWillTerminateNotification object:nil];
+    [notificationCenter addObserver:self selector:@selector(slk_cacheTextView) name:UIApplicationDidEnterBackgroundNotification object:nil];
+    [notificationCenter addObserver:self selector:@selector(slk_cacheTextView) name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
 }
 
 - (void)slk_unregisterNotifications
@@ -2270,6 +2252,7 @@ CGFloat const SLKAutoCompletionViewDefaultHeight = 140.0;
     
     // Application notifications
     [notificationCenter removeObserver:self name:UIApplicationWillTerminateNotification object:nil];
+    [notificationCenter removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:nil];
     [notificationCenter removeObserver:self name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
 }
 
