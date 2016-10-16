@@ -1330,8 +1330,8 @@ CGFloat const SLKAutoCompletionViewDefaultHeight = 140.0;
         CGPoint contentOffset = self.tableView.contentOffset;
         CGFloat tableViewContentHeight = self.tableView.contentSize.height;
         CGFloat tableViewHeight = self.tableView.frame.size.height;
-        BOOL isAtBottom = self.tableView.contentOffset.y + 64 >= (tableViewContentHeight - tableViewHeight);
-        if ((self.tableView.contentSize.height  < tableViewHeight) && delta < 0) {
+        BOOL isAtBottom = self.tableView.contentOffset.y >= (tableViewContentHeight - tableViewHeight);
+        if ((self.tableView.contentSize.height + 64 < tableViewHeight) && delta < 0) {
             // Content Size less than tableView size
             if (self.tableView.contentSize.height + 64 > tableViewHeight + delta) {
                 // Keyboard will cover content
