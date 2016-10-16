@@ -28,8 +28,6 @@ CGFloat const SLKAutoCompletionViewDefaultHeight = 140.0;
 {
     CGPoint _scrollViewOffsetBeforeDragging;
     CGFloat _keyboardHeightBeforeDragging;
-    CGPoint _textViewPointBeforeEditing;
-    BOOL _viewAtButtomBeforeEditing;
 }
 
 // The shared scrollView pointer, either a tableView or collectionView
@@ -1320,6 +1318,39 @@ CGFloat const SLKAutoCompletionViewDefaultHeight = 140.0;
 
 
 #pragma mark - Notification Events
+- (void)slk_willChangeFrameKeyboard:(NSNotification *)notification
+{
+    NSInteger curve = [notification.userInfo[UIKeyboardAnimationCurveUserInfoKey] integerValue];
+    NSTimeInterval duration = [notification.userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+    CGRect beginFrame = [notification.userInfo[UIKeyboardFrameBeginUserInfoKey] CGRectValue];
+    CGRect endFrame = [notification.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    CGFloat delta = (endFrame.origin.y - beginFrame.origin.y);
+    
+    if (!self.isInverted && self.tableView && fabs(delta) > 0) {
+        CGPoint contentOffset = self.tableView.contentOffset;
+        CGFloat tableViewContentHeight = self.tableView.contentSize.height;
+        CGFloat tableViewHeight = self.tableView.frame.size.height;
+        BOOL isAtBottom = self.tableView.contentOffset.y + 64 >= (tableViewContentHeight - tableViewHeight);
+        if ((self.tableView.contentSize.height  < tableViewHeight) && delta < 0) {
+            // Content Size less than tableView size
+            if (self.tableView.contentSize.height + 64 > tableViewHeight + delta) {
+                // Keyboard will cover content
+                contentOffset.y = self.tableView.contentSize.height - tableViewHeight - delta;
+                UIViewAnimationOptions options = (curve << 16) | UIViewAnimationOptionBeginFromCurrentState;
+                [UIView animateWithDuration:duration delay:0 options:options animations:^{
+                    self.tableView.contentOffset = contentOffset;
+                } completion:nil];
+            }
+        } else if (!isAtBottom || (isAtBottom && delta < 0)) {
+            contentOffset.y -= delta;
+            UIViewAnimationOptions options = (curve << 16) | UIViewAnimationOptionBeginFromCurrentState;
+            [UIView animateWithDuration:duration delay:0 options:options animations:^{
+                self.tableView.contentOffset = contentOffset;
+            } completion:nil];
+        }
+    }
+
+}
 
 - (void)slk_willShowOrHideKeyboard:(NSNotification *)notification
 {
@@ -2033,15 +2064,6 @@ CGFloat const SLKAutoCompletionViewDefaultHeight = 140.0;
 
 - (BOOL)textViewShouldBeginEditing:(SLKTextView *)textView
 {
-    if (!_inverted && _tableView) {
-        if (_tableView.contentOffset.y >= (_tableView.contentSize.height - _tableView.frame.size.height)) {
-            //user has scrolled to the bottom
-            _viewAtButtomBeforeEditing = YES;
-        } else {
-            _viewAtButtomBeforeEditing = NO;
-            _textViewPointBeforeEditing = [textView.superview convertPoint:textView.frame.origin toView: self.view];
-        }
-    }
     return YES;
 }
 
@@ -2052,19 +2074,6 @@ CGFloat const SLKAutoCompletionViewDefaultHeight = 140.0;
 
 - (void)textViewDidBeginEditing:(SLKTextView *)textView
 {
-    if (!_inverted && _tableView) {
-        CGPoint textViewPoint = [textView.superview convertPoint:textView.frame.origin toView: self.view];
-        CGPoint contentOffset = _tableView.contentOffset;
-        if (_viewAtButtomBeforeEditing) {
-            CGFloat y = _tableView.contentSize.height - _tableView.frame.size.height;
-            if (y > 0) {
-                contentOffset.y = y;
-            }
-        } else {
-            contentOffset.y += _textViewPointBeforeEditing.y - textViewPoint.y;
-        }
-        [_tableView setContentOffset:contentOffset animated:YES];
-    }
     // No implementation here. Meant to be overriden in subclass.
 }
 
@@ -2286,6 +2295,7 @@ CGFloat const SLKAutoCompletionViewDefaultHeight = 140.0;
     // Keyboard notifications
     [notificationCenter addObserver:self selector:@selector(slk_willShowOrHideKeyboard:) name:UIKeyboardWillShowNotification object:nil];
     [notificationCenter addObserver:self selector:@selector(slk_willShowOrHideKeyboard:) name:UIKeyboardWillHideNotification object:nil];
+    [notificationCenter addObserver:self selector:@selector(slk_willChangeFrameKeyboard:) name:UIKeyboardWillChangeFrameNotification object:nil];
     [notificationCenter addObserver:self selector:@selector(slk_didShowOrHideKeyboard:) name:UIKeyboardDidShowNotification object:nil];
     [notificationCenter addObserver:self selector:@selector(slk_didShowOrHideKeyboard:) name:UIKeyboardDidHideNotification object:nil];
     
@@ -2317,6 +2327,7 @@ CGFloat const SLKAutoCompletionViewDefaultHeight = 140.0;
     // Keyboard notifications
     [notificationCenter removeObserver:self name:UIKeyboardWillShowNotification object:nil];
     [notificationCenter removeObserver:self name:UIKeyboardWillHideNotification object:nil];
+    [notificationCenter removeObserver:self name:UIKeyboardWillChangeFrameNotification object:nil];
     [notificationCenter removeObserver:self name:UIKeyboardDidShowNotification object:nil];
     [notificationCenter removeObserver:self name:UIKeyboardDidHideNotification object:nil];
     
