@@ -1326,26 +1326,34 @@ CGFloat const SLKAutoCompletionViewDefaultHeight = 140.0;
     CGRect endFrame = [notification.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
     CGFloat delta = (endFrame.origin.y - beginFrame.origin.y);
     
-    if (!self.isInverted && self.tableView && fabs(delta) > 0) {
-        CGPoint contentOffset = self.tableView.contentOffset;
-        CGFloat tableViewContentHeight = self.tableView.contentSize.height;
-        CGFloat tableViewHeight = self.tableView.frame.size.height;
-        BOOL isAtBottom = self.tableView.contentOffset.y >= (tableViewContentHeight - tableViewHeight);
-        if ((self.tableView.contentSize.height + 64 < tableViewHeight) && delta < 0) {
-            // Content Size less than tableView size
-            if (self.tableView.contentSize.height + 64 > tableViewHeight + delta) {
+    UIScrollView *scrollView = nil;
+    
+    if (self.tableView) {
+        scrollView = self.tableView;
+    } else if (self.collectionView) {
+        scrollView = self.collectionView;
+    }
+    
+    if (!self.isInverted && scrollView && fabs(delta) > 0) {
+        CGPoint contentOffset = scrollView.contentOffset;
+        CGFloat contentHeight = scrollView.contentSize.height;
+        CGFloat frameHeight = scrollView.frame.size.height;
+        BOOL isAtBottom = scrollView.contentOffset.y >= (contentHeight - frameHeight);
+        if ((contentHeight + 64 < frameHeight) && delta < 0) {
+            // Content Size less than frame size
+            if (contentHeight + 64 > frameHeight + delta) {
                 // Keyboard will cover content
-                contentOffset.y = self.tableView.contentSize.height - tableViewHeight - delta;
+                contentOffset.y = contentHeight - frameHeight - delta;
                 UIViewAnimationOptions options = (curve << 16) | UIViewAnimationOptionBeginFromCurrentState;
                 [UIView animateWithDuration:duration delay:0 options:options animations:^{
-                    self.tableView.contentOffset = contentOffset;
+                    scrollView.contentOffset = contentOffset;
                 } completion:nil];
             }
         } else if (!isAtBottom || (isAtBottom && delta < 0)) {
             contentOffset.y -= delta;
             UIViewAnimationOptions options = (curve << 16) | UIViewAnimationOptionBeginFromCurrentState;
             [UIView animateWithDuration:duration delay:0 options:options animations:^{
-                self.tableView.contentOffset = contentOffset;
+                scrollView.contentOffset = contentOffset;
             } completion:nil];
         }
     }
