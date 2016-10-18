@@ -1330,19 +1330,11 @@ CGFloat const SLKAutoCompletionViewDefaultHeight = 140.0;
     CGRect endFrame = [notification.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
     CGFloat delta = (endFrame.origin.y - beginFrame.origin.y);
     
-    UIScrollView *scrollView = nil;
-    
-    if (self.tableView) {
-        scrollView = self.tableView;
-    } else if (self.collectionView) {
-        scrollView = self.collectionView;
-    }
-    
-    if (!self.isInverted && scrollView && fabs(delta) > 0) {
-        CGPoint contentOffset = scrollView.contentOffset;
-        CGFloat contentHeight = scrollView.contentSize.height;
-        CGFloat frameHeight = scrollView.frame.size.height;
-        BOOL isAtBottom = scrollView.contentOffset.y >= (contentHeight - frameHeight);
+    if (!self.isInverted  && fabs(delta) > 0) {
+        CGPoint contentOffset = self.scrollViewProxy.contentOffset;
+        CGFloat contentHeight = self.scrollViewProxy.contentSize.height;
+        CGFloat frameHeight = self.scrollViewProxy.frame.size.height;
+        BOOL isAtBottom = self.scrollViewProxy.contentOffset.y >= (contentHeight - frameHeight);
         if ((contentHeight + 64 < frameHeight) && delta < 0) {
             // Content Size less than frame size
             if (contentHeight + 64 > frameHeight + delta) {
@@ -1350,14 +1342,14 @@ CGFloat const SLKAutoCompletionViewDefaultHeight = 140.0;
                 contentOffset.y = contentHeight - frameHeight - delta;
                 UIViewAnimationOptions options = (curve << 16) | UIViewAnimationOptionBeginFromCurrentState;
                 [UIView animateWithDuration:duration delay:0 options:options animations:^{
-                    scrollView.contentOffset = contentOffset;
+                    self.scrollViewProxy.contentOffset = contentOffset;
                 } completion:nil];
             }
         } else if (!isAtBottom || (isAtBottom && delta < 0)) {
             contentOffset.y -= delta;
             UIViewAnimationOptions options = (curve << 16) | UIViewAnimationOptionBeginFromCurrentState;
             [UIView animateWithDuration:duration delay:0 options:options animations:^{
-                scrollView.contentOffset = contentOffset;
+                self.scrollViewProxy.contentOffset = contentOffset;
             } completion:nil];
         }
     }
